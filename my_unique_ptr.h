@@ -31,6 +31,8 @@ public:
         other.m_ptr = nullptr;
     }
 
+    void reset();
+    T* release();
     T& operator*()  const { return *m_ptr; }
     T* operator->() const { return m_ptr; }
     T* get() const { return m_ptr; }
