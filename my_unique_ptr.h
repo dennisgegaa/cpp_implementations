@@ -27,16 +27,32 @@ public:
 
     MyUniquePtr& operator=(MyUniquePtr&& other) noexcept
     {
+        if (this == &other)
+            return *this;
+
+        delete m_ptr;
         m_ptr = other.m_ptr;
         other.m_ptr = nullptr;
+
+        return *this;
     }
 
-    void reset();
-    T* release();
+    void reset(T* new_ptr = nullptr)
+    {
+        delete m_ptr;
+        m_ptr = new_ptr;
+    }
+
+    T* release()
+    {
+        T* tmp = m_ptr;
+        m_ptr = nullptr;
+        return tmp;
+    }
     T& operator*()  const { return *m_ptr; }
     T* operator->() const { return m_ptr; }
-    T* get() const { return m_ptr; }
+    T* get()        const { return m_ptr; }
 
 private:
-    T* m_ptr;
+    T* m_ptr { nullptr };
 };
